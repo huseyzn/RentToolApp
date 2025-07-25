@@ -16,7 +16,47 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
-        guard let _ = (scene as? UIWindowScene) else { return }
+        
+        var _: UserRole
+        
+        guard let windowScene = (scene as? UIWindowScene) else { return }
+        let window = UIWindow(windowScene: windowScene)
+        
+        let homeVC = HomeViewController(userRole: .admin)
+        let homeNC = UINavigationController(rootViewController: homeVC)
+        
+        let settingsVC = SettingsViewController()
+        let settingsNC = UINavigationController(rootViewController: settingsVC)
+        
+//        if userRole == .admin {
+//            let addPropertyVC = AddPropertyViewController()
+//            let addPropertyNC = UINavigationController(rootViewController: addPropertyVC)
+//            settingsNC.viewControllers.append(addPropertyNC)
+//        }
+        
+        let favoritesVC = FavoritesViewController()
+        let favoritesNC = UINavigationController(rootViewController: favoritesVC)
+        
+        let historyVC = HistoryViewController()
+        let historyNC = UINavigationController(rootViewController: historyVC)
+        
+        let tabBarController = UITabBarController()
+
+        homeVC.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house"), tag: 0)
+        
+        settingsVC.tabBarItem = UITabBarItem(title: "Settings", image: UIImage(systemName: "gear"), tag: 1)
+        
+        favoritesVC.tabBarItem = UITabBarItem(title: "Favorites", image: UIImage(systemName: "star"), tag: 2)
+        
+        historyVC.tabBarItem = UITabBarItem(title: "History", image: UIImage(systemName: "clock"), tag: 3)
+        
+        tabBarController.setViewControllers([homeNC, favoritesNC, historyNC, settingsNC], animated: true)
+
+        window.rootViewController = tabBarController
+
+        self.window = window
+
+        window.makeKeyAndVisible()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -49,7 +89,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Save changes in the application's managed object context when the application transitions to the background.
         (UIApplication.shared.delegate as? AppDelegate)?.saveContext()
     }
-
-
+    
 }
 

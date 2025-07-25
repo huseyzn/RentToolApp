@@ -34,8 +34,26 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
+				Tests/RentToolAppTests/RentToolAppTests.swift,
+				Tests/RentToolAppUITests/RentToolAppUITests.swift,
+				Tests/RentToolAppUITests/RentToolAppUITestsLaunchTests.swift,
 			);
 			target = 1DC029EE2E313DA4001ACCAD /* RentToolApp */;
+		};
+		1DC02A302E313DC5001ACCAD /* Exceptions for "RentToolApp" folder in "RentToolAppTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Tests/RentToolAppTests/RentToolAppTests.swift,
+			);
+			target = 1DC02A072E313DA5001ACCAD /* RentToolAppTests */;
+		};
+		1DC02A312E313DC5001ACCAD /* Exceptions for "RentToolApp" folder in "RentToolAppUITests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Tests/RentToolAppUITests/RentToolAppUITests.swift,
+				Tests/RentToolAppUITests/RentToolAppUITestsLaunchTests.swift,
+			);
+			target = 1DC02A112E313DA5001ACCAD /* RentToolAppUITests */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -44,18 +62,10 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				1DC02A1A2E313DA5001ACCAD /* Exceptions for "RentToolApp" folder in "RentToolApp" target */,
+				1DC02A302E313DC5001ACCAD /* Exceptions for "RentToolApp" folder in "RentToolAppTests" target */,
+				1DC02A312E313DC5001ACCAD /* Exceptions for "RentToolApp" folder in "RentToolAppUITests" target */,
 			);
 			path = RentToolApp;
-			sourceTree = "<group>";
-		};
-		1DC02A0B2E313DA5001ACCAD /* RentToolAppTests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = RentToolAppTests;
-			sourceTree = "<group>";
-		};
-		1DC02A152E313DA5001ACCAD /* RentToolAppUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = RentToolAppUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -89,8 +99,6 @@
 			isa = PBXGroup;
 			children = (
 				1DC029F12E313DA4001ACCAD /* RentToolApp */,
-				1DC02A0B2E313DA5001ACCAD /* RentToolAppTests */,
-				1DC02A152E313DA5001ACCAD /* RentToolAppUITests */,
 				1DC029F02E313DA4001ACCAD /* Products */,
 			);
 			sourceTree = "<group>";
@@ -143,9 +151,6 @@
 			dependencies = (
 				1DC02A0A2E313DA5001ACCAD /* PBXTargetDependency */,
 			);
-			fileSystemSynchronizedGroups = (
-				1DC02A0B2E313DA5001ACCAD /* RentToolAppTests */,
-			);
 			name = RentToolAppTests;
 			packageProductDependencies = (
 			);
@@ -165,9 +170,6 @@
 			);
 			dependencies = (
 				1DC02A142E313DA5001ACCAD /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				1DC02A152E313DA5001ACCAD /* RentToolAppUITests */,
 			);
 			name = RentToolAppUITests;
 			packageProductDependencies = (
@@ -294,9 +296,8 @@
 				INFOPLIST_FILE = RentToolApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -304,9 +305,13 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.huseyinjafarli.RentToolApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -322,9 +327,8 @@
 				INFOPLIST_FILE = RentToolApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -332,9 +336,13 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.huseyinjafarli.RentToolApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
