@@ -19,7 +19,7 @@ class SettingDetailsVC: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    var label: UILabel = {
+    lazy var label: UILabel = {
        let label = UILabel()
         label.textAlignment = .center
         label.font = .preferredFont(forTextStyle: .extraLargeTitle)
@@ -27,7 +27,7 @@ class SettingDetailsVC: UIViewController {
         return label
     }()
     
-    var image: UIImageView = {
+    lazy var image: UIImageView = {
         let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
         return image
@@ -39,21 +39,15 @@ class SettingDetailsVC: UIViewController {
     }
     
     func setupUI(){
-        view.backgroundColor = .systemBackground
-        view.addSubview(label)
-        view.addSubview(image)
-        
+        view.backgroundColor = .mainApp
+        navigationItem.backButtonTitle = ""
+        navigationItem.backButtonDisplayMode = .minimal
+        view.addSubviewsFromExt(label, image)
         label.text = item.title
         image.image = item.image
-        NSLayoutConstraint.activate([
-            label.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            label.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            
-            image.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 20),
-            image.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            image.widthAnchor.constraint(equalToConstant: 80),
-            image.heightAnchor.constraint(equalToConstant: 80)
-        ])
+        
+        label.anchor(centerY: view.centerYAnchor, centerX: view.centerXAnchor)
+        image.anchor(top: label.bottomAnchor, centerX: view.centerXAnchor, paddingTop: 20, width: 80, height: 80)
     }
     
 }

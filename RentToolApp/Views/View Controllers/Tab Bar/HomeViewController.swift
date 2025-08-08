@@ -9,6 +9,8 @@ import UIKit
 
 class HomeViewController: UIViewController {
    
+    public static let mainAppColor = UIColor(named: "MainAppColor") ?? .systemBackground
+    
     var userRole: UserRole
     
     var data: [Tool] = [
@@ -47,55 +49,64 @@ class HomeViewController: UIViewController {
     }
     
     //MARK: - Views
-    var collectionView: UICollectionView = {
+    var toolsCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.itemSize = CGSize(width: 320, height: 320)
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
         return view
     }()
-    
 
-    
+    //MARK: - Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupMainUIComponents()
+        setupUI()
 
-        collectionView.dataSource = self
-        collectionView.delegate = self
+    }
+
+    //MARK: - Setup UIs
+    func setupUI() {
+        view.backgroundColor = HomeViewController.mainAppColor
+        title = "Home"
         
-        collectionView.register(ToolCard.self, forCellWithReuseIdentifier: ToolCard.reuseIdentifier)
+        navigationItem.backButtonTitle = ""
+        navigationItem.backButtonDisplayMode = .minimal
         
+        view.addSubview(toolsCollectionView)
+        toolsCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        
+        toolsCollectionView.pinToSafeArea(of: view, paddingTop: 15)
+        
+        toolsCollectionView.dataSource = self
+        toolsCollectionView.delegate = self
+        
+        toolsCollectionView.register(ToolCard.self, forCellWithReuseIdentifier: ToolCard.reuseIdentifier)
+        
+        toolsCollectionView.backgroundColor = HomeViewController.mainAppColor
         
         if userRole == .admin {
             navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTool))
-            navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(changeUserRole))
         }
         
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
-        collectionView.addGestureRecognizer(longPress)
-    }
-    @objc func addTool() {
-        data.append(Tool(name: "Ad", category: .handTool, quantity: Int.random(in: 1...10), rentedQuantity: Int.random(in: 0...10), rentalPricePerDay: Double(Int.random(in: 3...20)), image: UIImage(systemName: "star"))
-                    )
-        collectionView.reloadData()
+        toolsCollectionView.addGestureRecognizer(longPress)
     }
     
-    @objc
-    func changeUserRole() {
-        if userRole == .admin {
-            userRole = .user
-        } else {
-            userRole = .admin
-        }
+    //MARK: - Button Functions
+    @objc func addTool() {
+        let vc = AddToolVC()
+        navigationController?.pushViewController(vc, animated: true)
+//        data.append(Tool(name: "Ad", category: .handTool, quantity: Int.random(in: 1...10), rentedQuantity: Int.random(in: 0...10), rentalPricePerDay: Double(Int.random(in: 3...20)), image: UIImage(systemName: "star")))
+//        toolsCollectionView.reloadData()
     }
+    
     
     @objc func handleLongPress(_ gesture: UILongPressGestureRecognizer) {
         guard userRole == .admin else { return }
-        let point = gesture.location(in: collectionView)
+        let point = gesture.location(in: toolsCollectionView)
 
-        guard let indexPath = collectionView.indexPathForItem(at: point) else { return }
+        guard let indexPath = toolsCollectionView.indexPathForItem(at: point) else { return }
         
         if gesture.state == .began {
             let selectedTool = data[indexPath.item]
@@ -103,32 +114,18 @@ class HomeViewController: UIViewController {
 
             alert.addAction(UIAlertAction(title: "Sil", style: .destructive, handler: { _ in
                 self.data.remove(at: indexPath.item)
-                self.collectionView.deleteItems(at: [indexPath])
+                self.toolsCollectionView.deleteItems(at: [indexPath])
             }))
 
             alert.addAction(UIAlertAction(title: "Ləğv et", style: .cancel))
             present(alert, animated: true)
         }
     }
-    //MARK: - Setup UIs
-    
-    //MARK: - Main
-    func setupMainUIComponents() {
-        view.backgroundColor = .systemBackground
-        title = "Home"
-        navigationItem.largeTitleDisplayMode = .always
-        view.addSubview(collectionView)
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-        ])
-    }
 
 }
 
+
+//MARK: - Collection View
 extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -147,7 +144,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         DispatchQueue.main.async {
             let vc = DetailsViewController(tool: self.data[indexPath.row])
-            
+            vc.delegate = self
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }
@@ -155,4 +152,19 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
 
 #Preview {
     UINavigationController(rootViewController: HomeViewController(userRole: .admin))
+}
+
+// MARK: - ToolSelectionDelegate
+extension HomeViewController: ToolSelectionDelegate {
+    func didOrderTool(_ tool: Tool) {
+        print("Sifariş edildi: \(tool.name)")
+        if let tabBarControllers = tabBarController?.viewControllers {
+            for case let navVC as UINavigationController in tabBarControllers {
+                if let historyVC = navVC.viewControllers.first(where: { $0 is HistoryViewController }) as? HistoryViewController {
+                    historyVC.data.append(tool)
+                    historyVC.historyTableView.reloadData()
+                }
+            }
+        }
+    }
 }

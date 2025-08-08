@@ -45,5 +45,5 @@ struct Tool : Identifiable/*, Codable*/ {
 
     var image: UIImage?
     
-//    var date = Date()
+    var date = Date()
 }

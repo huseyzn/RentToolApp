@@ -6,3 +6,7 @@
 //
 
 import Foundation
+
+protocol ToolSelectionDelegate: AnyObject {
+    func didOrderTool(_ tool: Tool)
+}

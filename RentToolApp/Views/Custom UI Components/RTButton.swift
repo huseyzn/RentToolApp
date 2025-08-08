@@ -20,7 +20,7 @@ class RTButton: UIButton {
     
     func setupUI() {
         var config = UIButton.Configuration.plain()
-        config.baseBackgroundColor = .tabBar
+
         config.titleAlignment = .center
         
         configuration = config
@@ -28,5 +28,7 @@ class RTButton: UIButton {
         layer.masksToBounds = true
         layer.borderWidth = 0.5
         layer.borderColor = UIColor.label.cgColor
+        backgroundColor = .button
+        tintColor = .tabBar
     }
 }

@@ -9,12 +9,31 @@ import UIKit
 
 class RTTextField: UITextField {
 
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupUI()
     }
-    */
-
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setupUI()
+    }
+    
+    private func setupUI() {
+        borderStyle = .none
+        
+        backgroundColor = UIColor { traitCollection in
+            traitCollection.userInterfaceStyle == .dark
+            ? UIColor.white.withAlphaComponent(0.05)
+            : UIColor.lightGray.withAlphaComponent(0.1)
+        }
+        
+        layer.cornerRadius = 8
+        layer.borderWidth = 1
+        layer.borderColor = UIColor.toolCard.cgColor
+        textColor = .tabBar
+        font = .systemFont(ofSize: 16)
+        clipsToBounds = true
+        translatesAutoresizingMaskIntoConstraints = false
+    }
 }

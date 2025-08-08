@@ -9,6 +9,8 @@ import UIKit
 
 class SettingsViewController: UIViewController {
     
+
+    
     let items = [
         SettingItem(title: "About"),
         SettingItem(title: "Privacy Policy"),
@@ -29,18 +31,15 @@ class SettingsViewController: UIViewController {
     private func setupMainUIComponents() {
         view.backgroundColor = .systemBackground
         title = "Settings"
-        navigationItem.largeTitleDisplayMode = .automatic
-        
+        navigationItem.backButtonTitle = ""
+        navigationItem.backButtonDisplayMode = .minimal
+
         view.addSubview(settingsTableView)
         settingsTableView.delegate = self
         settingsTableView.dataSource = self
         
-        NSLayoutConstraint.activate([
-            settingsTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
-            settingsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            settingsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            settingsTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
+        settingsTableView.backgroundColor = .mainApp
+        settingsTableView.pinToSafeArea(of: view)
     }
     
 }
@@ -56,6 +55,7 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
         config.text = items[indexPath.row].title
         config.image = items[indexPath.row].image
         cell.contentConfiguration = config
+        cell.backgroundColor = .clear
         return cell
     }
     
@@ -63,4 +63,9 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
         let vc = SettingDetailsVC(settingItem: items[indexPath.row])
         navigationController?.pushViewController(vc, animated: true)
     }
+}
+
+#Preview {
+    UINavigationController(rootViewController: SettingsViewController())
+    
 }

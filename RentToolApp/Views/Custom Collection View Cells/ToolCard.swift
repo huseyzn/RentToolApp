@@ -9,16 +9,16 @@ import UIKit
 
 class ToolCard: UICollectionViewCell {
 
-    static let cardColor : UIColor = .systemTeal
+    static let cardColor : UIColor = UIColor(named: "ToolCardColor") ?? .systemBlue
     static let reuseIdentifier = "ToolCard"
+    static let borderColor: CGColor = CGColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 1)
     
     var containerView : UIView = {
         let view = UIView()
         view.layer.cornerRadius = 10
         view.layer.masksToBounds = false
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.setToCardColor()
-        view.layer.shadowColor = UIColor(named: "primaryBorderColor")?.cgColor
+        view.backgroundColor = ToolCard.cardColor
         view.layer.shadowOffset = CGSize(width: 1, height: 3)
         view.layer.shadowOpacity = 0.2
         return view
@@ -30,6 +30,9 @@ class ToolCard: UICollectionViewCell {
         stackView.distribution = .fillProportionally
         stackView.alignment = .center
         stackView.spacing = 8
+        stackView.layer.borderWidth = 1
+        stackView.layer.cornerRadius = 10
+        stackView.layer.borderColor = ToolCard.borderColor
         stackView.isLayoutMarginsRelativeArrangement = true
         stackView.layoutMargins = UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -45,6 +48,9 @@ class ToolCard: UICollectionViewCell {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.isLayoutMarginsRelativeArrangement = true
         stackView.layoutMargins = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 0)
+        stackView.layer.borderColor = ToolCard.borderColor
+        stackView.layer.borderWidth = 1
+        stackView.layer.cornerRadius = 10
         return stackView
     }()
     
@@ -53,8 +59,6 @@ class ToolCard: UICollectionViewCell {
         image.contentMode = .scaleAspectFit
         image.clipsToBounds = true
         image.translatesAutoresizingMaskIntoConstraints = false
-//        image.layer.borderWidth = 0.4
-//        image.layer.cornerRadius = 8
         return image
     }()
     var nameLabel: UILabel = {
@@ -63,7 +67,6 @@ class ToolCard: UICollectionViewCell {
         label.textAlignment = .center
         label.numberOfLines = 1
         label.translatesAutoresizingMaskIntoConstraints = false
-//        label.layer.borderWidth = 1
         return label
     }()
 
@@ -73,7 +76,6 @@ class ToolCard: UICollectionViewCell {
         label.textAlignment = .center
         label.textColor = .secondaryLabel
         label.translatesAutoresizingMaskIntoConstraints = false
-//        label.layer.borderWidth = 1
         return label
     }()
 
@@ -82,11 +84,14 @@ class ToolCard: UICollectionViewCell {
         label.font = UIFont.systemFont(ofSize: 14)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
-//        label.layer.borderWidth = 1
-
         return label
     }()
 
+    var addToFavoritesButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "star"), for: .normal)
+        return button
+    }()
 
     
     required init?(coder: NSCoder) {
@@ -109,23 +114,16 @@ class ToolCard: UICollectionViewCell {
         labelsStackView.addArrangedSubview(nameLabel)
         labelsStackView.addArrangedSubview(priceLabel)
         labelsStackView.addArrangedSubview(availabilityLabel)
-        
-        containerView.applyDynamicBorder(colorName: "primaryBorderColor", width: 0.4, cornerRadius: 10)
-        labelsStackView.applyDynamicBorder(colorName: "primaryBorderColor", width: 0.3, cornerRadius: 10)
+
+
     }
 
     func setupConstraints() {
+        containerView.pinToEdges(of: contentView, padding: 8)
+        containerStackView.pinToEdges(of: containerView)
+        
         NSLayoutConstraint.activate([
-            containerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
-            containerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 8),
-            containerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -8),
-            containerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
-            
-            containerStackView.topAnchor.constraint(equalTo: containerView.topAnchor),
-            containerStackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            containerStackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-            containerStackView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
-            
+
             labelsStackView.leadingAnchor.constraint(equalTo: containerStackView.leadingAnchor),
             labelsStackView.trailingAnchor.constraint(equalTo: containerStackView.trailingAnchor),
 
