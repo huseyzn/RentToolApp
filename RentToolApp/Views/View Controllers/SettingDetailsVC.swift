@@ -19,11 +19,9 @@ class SettingDetailsVC: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    lazy var label: UILabel = {
-       let label = UILabel()
-        label.textAlignment = .center
+    lazy var label: RTLabel = {
+       let label = RTLabel(autoLayout: true)
         label.font = .preferredFont(forTextStyle: .extraLargeTitle)
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -38,9 +36,8 @@ class SettingDetailsVC: UIViewController {
         setupUI()
     }
     
-    func setupUI(){
-        view.backgroundColor = .mainApp
-        navigationItem.backButtonTitle = ""
+    private func setupUI(){
+        view.backgroundColor = .rtBackground
         navigationItem.backButtonDisplayMode = .minimal
         view.addSubviewsFromExt(label, image)
         label.text = item.title

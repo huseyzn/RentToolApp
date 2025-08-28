@@ -25,20 +25,20 @@ class SettingsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupMainUIComponents()
+        setupUI()
     }
     
-    private func setupMainUIComponents() {
-        view.backgroundColor = .systemBackground
+    private func setupUI() {
+        view.backgroundColor = .rtBackground
         title = "Settings"
-        navigationItem.backButtonTitle = ""
+        navigationItem.backButtonTitle = "Tənzimləmələr"
         navigationItem.backButtonDisplayMode = .minimal
 
         view.addSubview(settingsTableView)
         settingsTableView.delegate = self
         settingsTableView.dataSource = self
         
-        settingsTableView.backgroundColor = .mainApp
+        settingsTableView.backgroundColor = .clear
         settingsTableView.pinToSafeArea(of: view)
     }
     
@@ -52,8 +52,12 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
         var config = UIListContentConfiguration.cell()
-        config.text = items[indexPath.row].title
-        config.image = items[indexPath.row].image
+        
+        let item = items[indexPath.row]
+        
+        config.text = item.title
+        config.image = item.image
+        
         cell.contentConfiguration = config
         cell.backgroundColor = .clear
         return cell

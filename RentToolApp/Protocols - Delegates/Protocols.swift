@@ -10,3 +10,7 @@ import Foundation
 protocol ToolSelectionDelegate: AnyObject {
     func didOrderTool(_ tool: Tool)
 }
+
+protocol AddToFavoritesDelegate: AnyObject {
+    func didAddToolToFavorites(_ tool: Tool)
+}

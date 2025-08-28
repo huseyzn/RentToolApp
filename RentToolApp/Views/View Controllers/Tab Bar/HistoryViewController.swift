@@ -16,7 +16,7 @@ class HistoryViewController: UIViewController {
         return tableView
     }()
     
-    var data = [Tool]()
+    var data: [Tool] = []
     
     
     //MARK: - Life Cycle
@@ -27,27 +27,23 @@ class HistoryViewController: UIViewController {
     
     
     //MARK: - Setup UI Functions
-    func setupUI(){
-        view.backgroundColor = HomeViewController.mainAppColor
+    private func setupUI(){
+        view.backgroundColor = .rtBackground
         title = "History"
         
-        navigationItem.backButtonTitle = ""
         navigationItem.backButtonDisplayMode = .minimal
         
         view.addSubview(historyTableView)
         
-        
-        
         historyTableView.delegate = self
         historyTableView.dataSource = self
         
-        historyTableView.backgroundColor = .mainApp
+        historyTableView.backgroundColor = .clear
         historyTableView.pinToEdges(of: view)
         
     }
     
 }
-
 
 //MARK: - History TableView
 extension HistoryViewController: UITableViewDataSource, UITableViewDelegate {

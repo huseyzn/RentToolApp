@@ -7,6 +7,7 @@
 
 import UIKit
 
+///`doesn't work —— to be developed in the future`
 class FavoritesViewController: UIViewController {
     
     //MARK: - Views
@@ -16,11 +17,7 @@ class FavoritesViewController: UIViewController {
         return tableView
     }()
     
-    let button = RTButton()
-    
-    
-    let data = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
-    
+    let tools: [Tool] = fetchTools()
     //MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,13 +27,13 @@ class FavoritesViewController: UIViewController {
     }
     
     //MARK: - Setup UI Functions
-    func setupUI() {
-        view.backgroundColor = HomeViewController.mainAppColor
+    private func setupUI() {
+        view.backgroundColor = .rtBackground
         title = "Favorites"
-        navigationItem.backButtonTitle = ""
+//        navigationItem.backButtonTitle = ""
         navigationItem.backButtonDisplayMode = .minimal
         
-        favoritesTableView.backgroundColor = .mainApp
+        favoritesTableView.backgroundColor = .rtBackground
         
         favoritesTableView.delegate = self
         favoritesTableView.dataSource = self
@@ -44,9 +41,6 @@ class FavoritesViewController: UIViewController {
         view.addSubviewsFromExt(favoritesTableView)
         
         favoritesTableView.pinToSafeArea(of: view)
-        
-        
-        
     }
     
 }
@@ -54,14 +48,19 @@ class FavoritesViewController: UIViewController {
 //MARK: - Favorites Table View
 extension FavoritesViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        data.count
+        tools.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
         var config = UIListContentConfiguration.cell()
         let cellImage = UIImage(systemName: "star.fill")
-        config.text = "\(data[indexPath.row]). Item"
+        
+        let tool = tools[indexPath.row]
+        let price = tool.rentalPricePerDay
+        let name = tool.name
+        
+        config.text = "\(name) - \(Int(price)) AZN"
         config.image = cellImage
         config.imageProperties.tintColor = .systemYellow
         
@@ -71,7 +70,6 @@ extension FavoritesViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
 }
-
 
 //MARK: - Preview
 #Preview{

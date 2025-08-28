@@ -9,9 +9,13 @@ import UIKit
 
 class ToolCard: UICollectionViewCell {
 
-    static let cardColor : UIColor = UIColor(named: "ToolCardColor") ?? .systemBlue
+    static let cardColor : UIColor = .accent
     static let reuseIdentifier = "ToolCard"
-    static let borderColor: CGColor = CGColor(red: 20/255, green: 20/255, blue: 20/255, alpha: 1)
+    static let labelColor : UIColor = .rtLabel
+    static let secondaryLabelColor : UIColor = .rtSecondaryLabel
+    
+    let csvMargins = UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)
+    let lsvMargins = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 0)
     
     var containerView : UIView = {
         let view = UIView()
@@ -23,76 +27,48 @@ class ToolCard: UICollectionViewCell {
         view.layer.shadowOpacity = 0.2
         return view
     }()
+        
+    lazy var containerStackView = RTStackView(axis: .vertical,
+                                              distribution: .fillProportionally,
+                                              alignment: .center,
+                                              spacing: 8,
+                                              margins: csvMargins,
+                                              cornerRadius: 10,
+                                              borderWidth: 1)
     
-    var containerStackView : UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.distribution = .fillProportionally
-        stackView.alignment = .center
-        stackView.spacing = 8
-        stackView.layer.borderWidth = 1
-        stackView.layer.cornerRadius = 10
-        stackView.layer.borderColor = ToolCard.borderColor
-        stackView.isLayoutMarginsRelativeArrangement = true
-        stackView.layoutMargins = UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
-    }()
-    
-    var labelsStackView : UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.distribution = .fillProportionally
-        stackView.alignment = .leading
-        stackView.spacing = 0
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.isLayoutMarginsRelativeArrangement = true
-        stackView.layoutMargins = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 0)
-        stackView.layer.borderColor = ToolCard.borderColor
-        stackView.layer.borderWidth = 1
-        stackView.layer.cornerRadius = 10
-        return stackView
-    }()
+    lazy var labelsStackView = RTStackView(axis: .vertical,
+                                           distribution: .fillProportionally,
+                                           alignment: .leading,
+                                           spacing: 0,
+                                           margins: lsvMargins,
+                                           cornerRadius: 10,
+                                           borderWidth: 1)
     
     lazy var cardImage : UIImageView = {
         let image = UIImageView()
         image.contentMode = .scaleAspectFit
         image.clipsToBounds = true
         image.translatesAutoresizingMaskIntoConstraints = false
+        image.backgroundColor = .clear
         return image
     }()
-    var nameLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 18)
-        label.textAlignment = .center
+    
+    var nameLabel: RTLabel = {
+        let label = RTLabel(style: .boldTitle, size: 18, autoLayout: true)
         label.numberOfLines = 1
-        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
 
-    var priceLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16)
-        label.textAlignment = .center
-        label.textColor = .secondaryLabel
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-
-    var availabilityLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 14)
-        label.textAlignment = .center
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-
+    var priceLabel = RTLabel(style: .subtitle, size: 16, autoLayout: true)
+    
+    var availabilityLabel = RTLabel(style: .boldTitle, size: 14, autoLayout: true)
+    
     var addToFavoritesButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "star"), for: .normal)
+        button.backgroundColor = .systemGray3.withAlphaComponent(0.4)
         return button
     }()
-
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -114,29 +90,28 @@ class ToolCard: UICollectionViewCell {
         labelsStackView.addArrangedSubview(nameLabel)
         labelsStackView.addArrangedSubview(priceLabel)
         labelsStackView.addArrangedSubview(availabilityLabel)
-
-
     }
-
     func setupConstraints() {
         containerView.pinToEdges(of: contentView, padding: 8)
         containerStackView.pinToEdges(of: containerView)
         
+        labelsStackView.anchor(leading: containerStackView.leadingAnchor, trailing: containerStackView.trailingAnchor)
+        
         NSLayoutConstraint.activate([
-
-            labelsStackView.leadingAnchor.constraint(equalTo: containerStackView.leadingAnchor),
-            labelsStackView.trailingAnchor.constraint(equalTo: containerStackView.trailingAnchor),
-
             cardImage.heightAnchor.constraint(equalTo: containerStackView.heightAnchor, multiplier: 0.5),
             cardImage.widthAnchor.constraint(equalTo: containerStackView.widthAnchor, multiplier: 0.9),
         ])
     }
 
     func configure(with tool: Tool) {
-        cardImage.image              = tool.image ?? UIImage(systemName: "photo")
+        if let data = tool.image {
+            cardImage.image = UIImage(data: data)
+        } else {
+            cardImage.image = UIImage(systemName: "photo")
+        }
         nameLabel.text               = tool.name
-        priceLabel.text              = "₼\(tool.rentalPricePerDay)/gün"
-        availabilityLabel.text       = tool.isAvailable ? "Mövcuddur" : "Mövcud deyil"
+        priceLabel.text              = "₼\(tool.rentalPricePerDay)/day"
+        availabilityLabel.text       = tool.isAvailable ? "Available" : "Not Available"
         availabilityLabel.textColor  = tool.isAvailable ? .systemGreen : .systemRed
     }
 }

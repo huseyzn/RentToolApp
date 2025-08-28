@@ -55,46 +55,34 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         tabBarController.setViewControllers([homeNC, favoritesNC, historyNC, settingsNC], animated: true)
         
-        //MARK: - Tab Bar Appearance
+        // MARK: - Tab Bar
         let tabBarAppearance = UITabBarAppearance()
-        tabBarAppearance.backgroundColor = .tabAndNav
+        tabBarAppearance.configureWithOpaqueBackground()
+        tabBarAppearance.backgroundColor = .rtBackground
         tabBarAppearance.shadowColor = .clear
-        tabBarAppearance.backgroundEffect = UIBlurEffect(style: .systemUltraThinMaterial)
-        
-//        tabBarAppearance.configureWithOpaqueBackground() // və ya configureWithDefaultBackground()
 
-        
+        tabBarAppearance.stackedLayoutAppearance.normal.iconColor = .rtSecondaryLabel
+        tabBarAppearance.stackedLayoutAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.rtSecondaryLabel]
 
-        // Normal (seçilməmiş) item rəngi
-        tabBarAppearance.stackedLayoutAppearance.normal.iconColor = .tabBar
-        tabBarAppearance.stackedLayoutAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.tabBar]
+        tabBarAppearance.stackedLayoutAppearance.selected.iconColor = .rtLabel
+        tabBarAppearance.stackedLayoutAppearance.selected.titleTextAttributes = [.foregroundColor: UIColor.rtLabel]
 
-        // Seçilmiş item rəngi
-        tabBarAppearance.stackedLayoutAppearance.selected.iconColor = .button
-        tabBarAppearance.stackedLayoutAppearance.selected.titleTextAttributes = [.foregroundColor: UIColor.button]
-
-        
         tabBarController.tabBar.standardAppearance = tabBarAppearance
-        
         if #available(iOS 15.0, *) {
             tabBarController.tabBar.scrollEdgeAppearance = tabBarAppearance
         }
-        
-        //MARK: - Navigation Bar Appearance
-        let navBarAppearance = UINavigationBarAppearance()
-        navBarAppearance.backgroundColor = .tabAndNav
-        navBarAppearance.shadowColor = .clear
-        _ = NSAttributedString.Key.self
-        UINavigationBar.appearance().tintColor = .label
 
-        
-        
+        // MARK: - Navigation Bar
+        let navBarAppearance = UINavigationBarAppearance()
+        navBarAppearance.configureWithOpaqueBackground()
+        navBarAppearance.backgroundColor = .rtBackground
+        navBarAppearance.shadowColor = .rtBackground
+
+        UINavigationBar.appearance().tintColor = .rtButton
         UINavigationBar.appearance().standardAppearance = navBarAppearance
-        
         if #available(iOS 15.0, *) {
             UINavigationBar.appearance().scrollEdgeAppearance = navBarAppearance
         }
-        
         
         window.rootViewController = tabBarController
         
